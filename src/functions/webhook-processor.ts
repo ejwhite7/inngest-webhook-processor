@@ -29,7 +29,11 @@ export const processWebhook = inngest.createFunction(
             break;
           case 'event':
             const eventPayload = item.payload as EventPayload;
-            promises.push(posthog.capture(eventPayload.distinctId, eventPayload.event, eventPayload.properties));
+            promises.push(posthog.capture({
+              distinctId: eventPayload.distinctId,
+              event: eventPayload.event,
+              properties: eventPayload.properties
+            }));
             break;
           case 'group':
             const groupPayload = item.payload as GroupPayload;
