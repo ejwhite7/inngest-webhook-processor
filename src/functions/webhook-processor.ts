@@ -20,9 +20,22 @@ export const processWebhook = inngest.createFunction(
 
     // Step 2: Send to PostHog based on type
     await step.run("send-to-posthog", async () => {
+      console.log(`🎯 PostHog Config Check:`, {
+        apiKey: process.env.POSTHOG_API_KEY ? 'SET' : 'MISSING',
+        host: process.env.POSTHOG_HOST || 'DEFAULT',
+        transformedDataCount: transformedData.length
+      });
+
+      if (!process.env.POSTHOG_API_KEY || process.env.POSTHOG_API_KEY === 'your-posthog-api-key') {
+        console.error('❌ PostHog API key not configured properly');
+        throw new Error('PostHog API key not configured');
+      }
+
       const promises = [];
 
       for (const item of transformedData) {
+        console.log(`📤 Sending to PostHog:`, { type: item.type, payload: item.payload });
+
         switch (item.type) {
           case 'identify':
             promises.push(posthog.identify(item.payload as IdentifyPayload));
@@ -47,7 +60,17 @@ export const processWebhook = inngest.createFunction(
         }
       }
 
-      await Promise.all(promises);
+      try {
+        await Promise.all(promises);
+        console.log(`✅ Successfully sent ${transformedData.length} items to PostHog`);
+
+        // For serverless, we need to flush events to ensure they're sent
+        await posthog.flush();
+        console.log(`🚀 PostHog events flushed`);
+      } catch (error) {
+        console.error('❌ PostHog API Error:', error);
+        throw error;
+      }
     });
 
     return { processed: transformedData.length, source };
