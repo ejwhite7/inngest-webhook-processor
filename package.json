@@ -1,0 +1,29 @@
+{
+  "name": "inngest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "next build",
+    "start": "next start",
+    "dev": "next dev",
+    "dev:local": "ts-node src/index.ts",
+    "inngest:dev": "npx inngest-cli@latest dev",
+    "vercel-build": "next build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.5.2",
+    "express": "^5.1.0",
+    "inngest": "^3.42.1",
+    "next": "^15.5.4",
+    "posthog-node": "^5.8.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

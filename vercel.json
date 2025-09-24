@@ -1,0 +1,20 @@
+{
+  "functions": {
+    "api/inngest.js": {
+      "maxDuration": 300
+    },
+    "api/webhook/[source].js": {
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/inngest",
+      "destination": "/api/inngest"
+    },
+    {
+      "source": "/webhook/(.*)",
+      "destination": "/api/webhook/$1"
+    }
+  ]
+}
