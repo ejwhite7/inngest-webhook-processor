@@ -7,6 +7,46 @@ export function createWebhookHandler() {
   // Middleware to parse JSON and preserve raw body for signature verification
   app.use('/webhook/:source', express.raw({ type: 'application/json' }));
 
+  // Handle webhook verification challenges
+  app.get('/webhook/:source', async (req, res) => {
+    try {
+      const source = req.params.source;
+
+      // LinkedIn webhook verification
+      if (source === 'linkedin') {
+        const challenge = req.query.challenge;
+        if (challenge && typeof challenge === 'string') {
+          console.log(`🔐 LinkedIn webhook verification challenge: ${challenge}`);
+          return res.status(200).send(challenge);
+        }
+      }
+
+      // Facebook/Meta webhook verification
+      if (source === 'facebook' || source === 'meta') {
+        const mode = req.query['hub.mode'];
+        const token = req.query['hub.verify_token'];
+        const challenge = req.query['hub.challenge'];
+
+        if (mode === 'subscribe' && token === process.env.FACEBOOK_VERIFY_TOKEN) {
+          console.log(`🔐 Facebook webhook verified`);
+          return res.status(200).send(challenge);
+        }
+      }
+
+      // Generic challenge handling
+      const challenge = req.query.challenge;
+      if (challenge && typeof challenge === 'string') {
+        console.log(`🔐 Webhook verification challenge for ${source}: ${challenge}`);
+        return res.status(200).send(challenge);
+      }
+
+      res.status(400).json({ error: 'Invalid verification request' });
+    } catch (error) {
+      console.error('Webhook verification error:', error);
+      res.status(500).json({ error: 'Verification failed' });
+    }
+  });
+
   // Generic webhook endpoint
   app.post('/webhook/:source', async (req, res) => {
     try {

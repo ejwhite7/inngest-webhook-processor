@@ -12,6 +12,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).end();
   }
 
+  // Handle LinkedIn webhook verification challenge
+  if (req.method === 'GET' && source === 'linkedin') {
+    const challenge = req.query.challenge;
+    if (challenge && typeof challenge === 'string') {
+      console.log(`🔐 LinkedIn webhook verification challenge received: ${challenge}`);
+      return res.status(200).send(challenge);
+    }
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
