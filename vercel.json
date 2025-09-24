@@ -1,9 +1,9 @@
 {
   "functions": {
-    "api/inngest.js": {
+    "api/inngest.ts": {
       "maxDuration": 300
     },
-    "api/webhook/[source].js": {
+    "api/webhook/[source].ts": {
       "maxDuration": 60
     }
   },
