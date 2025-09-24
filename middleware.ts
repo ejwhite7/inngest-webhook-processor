@@ -24,6 +24,9 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/api/inngest/:path*',
+    '/api/inngest-public/:path*',
+    '/api/health-public/:path*',
+    '/api/webhook-public/:path*',
     '/webhook/:path*'
   ]
 }
