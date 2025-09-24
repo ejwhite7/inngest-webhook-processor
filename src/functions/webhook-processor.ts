@@ -37,7 +37,12 @@ export const processWebhook = inngest.createFunction(
             break;
           case 'group':
             const groupPayload = item.payload as GroupPayload;
-            promises.push(posthog.groupIdentify(groupPayload.groupType, groupPayload.groupKey, groupPayload.properties));
+            promises.push(posthog.groupIdentify({
+              groupType: groupPayload.groupType,
+              groupKey: groupPayload.groupKey,
+              properties: groupPayload.properties,
+              ...(groupPayload.distinctId && { distinctId: groupPayload.distinctId })
+            }));
             break;
         }
       }
