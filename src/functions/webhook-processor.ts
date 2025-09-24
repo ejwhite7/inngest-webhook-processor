@@ -75,7 +75,7 @@ function transformWebhookData(source: string, data: any): Array<{type: 'identify
 }
 
 function transformStripeWebhook(data: any): Array<{type: 'identify' | 'event' | 'group', payload: any}> {
-  const results = [];
+  const results: Array<{type: 'identify' | 'event' | 'group', payload: any}> = [];
 
   if (data.type && data.data?.object) {
     const obj = data.data.object;
@@ -120,7 +120,7 @@ function transformStripeWebhook(data: any): Array<{type: 'identify' | 'event' | 
 }
 
 function transformGitHubWebhook(data: any): Array<{type: 'identify' | 'event' | 'group', payload: any}> {
-  const results = [];
+  const results: Array<{type: 'identify' | 'event' | 'group', payload: any}> = [];
 
   if (data.sender) {
     results.push({
@@ -165,7 +165,7 @@ function transformGitHubWebhook(data: any): Array<{type: 'identify' | 'event' | 
 }
 
 function transformMailgunWebhook(data: any): Array<{type: 'identify' | 'event' | 'group', payload: any}> {
-  const results = [];
+  const results: Array<{type: 'identify' | 'event' | 'group', payload: any}> = [];
 
   if (data.recipient) {
     results.push({
@@ -192,7 +192,7 @@ function transformMailgunWebhook(data: any): Array<{type: 'identify' | 'event' |
 }
 
 function transformLinkedInWebhook(data: any): Array<{type: 'identify' | 'event' | 'group', payload: any}> {
-  const results = [];
+  const results: Array<{type: 'identify' | 'event' | 'group', payload: any}> = [];
 
   // LinkedIn Lead Sync API webhook structure
   if (data.leads && Array.isArray(data.leads)) {
@@ -282,7 +282,7 @@ function processLinkedInLead(lead: any, results: any[]) {
 }
 
 function transformCalendlyWebhook(data: any): Array<{type: 'identify' | 'event' | 'group', payload: any}> {
-  const results = [];
+  const results: Array<{type: 'identify' | 'event' | 'group', payload: any}> = [];
 
   // Calendly webhook event types
   const eventType = data.event;
@@ -420,7 +420,7 @@ function transformCalendlyWebhook(data: any): Array<{type: 'identify' | 'event' 
 }
 
 function transformGenericWebhook(data: any): Array<{type: 'identify' | 'event' | 'group', payload: any}> {
-  const results = [];
+  const results: Array<{type: 'identify' | 'event' | 'group', payload: any}> = [];
 
   // Try to find common user identifiers
   const userIdentifiers = ['user_id', 'userId', 'email', 'id', 'customer_id', 'customerId'];
